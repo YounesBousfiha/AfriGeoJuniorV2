@@ -69,9 +69,9 @@ class PersonController {
                     $stm->bindValue(':Email', $email);
                     $stm->execute();
                     if($data['Id_role'] == 1) {
-                        header("Location: ADMIN_URL"); 
+                        header("Location: ADMIN_URL");  // TODO: Change the URL
                     } else {
-                        header("Location: USER_URL"); 
+                        header("Location: USER_URL");  // TODO: Change the URL
                    } 
                    }
                 }

@@ -89,7 +89,7 @@ class PersonController
 
     public function validateUser()
     {
-        $token = $_COOKIE['auth_token'];
+        $token = isset($_COOKIE['auth_token']) ? $_COOKIE["auth_token"] : null;
         $user = null;
         if ($token) {
             $sql = "SELECT * FROM Users WHERE Token = :Token";
@@ -110,8 +110,7 @@ class PersonController
 
     public function logout()
     {
-        var_dump("logout");
         setcookie("auth_token", "", time() - 3600, '/');
-        header("Location: LOGIN_URL");
+        header("Location: ../home.php");
     }
 }

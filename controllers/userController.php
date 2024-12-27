@@ -2,8 +2,7 @@
 
 include 'PersonController.php';
 
-class UserController extends PersonController
-{
+class UserController extends PersonController {
     private $db;
 
     public function __construct($db)
@@ -11,10 +10,9 @@ class UserController extends PersonController
         $this->db = $db;
     }
 
-    public function signup($newuserInstance)
-    {
+    public function signup($newuserInstance) {
         $isExist = self::isExist($this->db, $newuserInstance->__get('email'));
-        if (!$isExist) {
+        if(!$isExist) {
             $sql = "INSERT INTO Users (Nom, Prenom, Email, Password, Id_role) VALUES (:Nom, :Prenom, :Email, :Password, :Id_role)";
             $hashed_password = password_hash($newuserInstance->__get('password'), PASSWORD_DEFAULT);
             try {
@@ -24,7 +22,7 @@ class UserController extends PersonController
                 $stm->bindValue(':Email', $newuserInstance->__get('email'));
                 $stm->bindValue(':Password', $hashed_password);
                 $stm->bindValue(':Id_role', $newuserInstance->__get('role'));
-                if ($stm->execute()) {
+                if($stm->execute()) {
                     header("Location: ABSOLUTE_URL"); // TODO: REDIRECT TO LOGIN PAGE
                     return true;
                 }
@@ -37,3 +35,4 @@ class UserController extends PersonController
         }
     }
 }
+?>

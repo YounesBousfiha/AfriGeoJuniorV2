@@ -1,7 +1,6 @@
 <?php
 
-class Continent
-{
+class Continent {
     private $continent_nom;
     private $created_by;
 
@@ -11,13 +10,12 @@ class Continent
         $this->created_by = $created_by;
     }
 
-    public function __get($property)
-    {
+    public function __get($property) {
         return $this->$property;
     }
 
-    public function __set($property, $value)
-    {
+    public function __set($property, $value) {
         $this->$property = $value;
     }
 }
+?>

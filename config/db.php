@@ -5,7 +5,7 @@ class DBConnection {
     private $host = 'localhost';
     private $user = 'root';
     private $password = 'MyStr0ng!Passw0rd';
-    private $dbname = 'Test_DataBase';
+    private $dbname = 'GeoJuniorV2';
     public $conn;
 
 
@@ -22,6 +22,11 @@ class DBConnection {
             echo "Connection failed: " . $e->getMessage();
         }
     }
+
+    public function prepare($statement) {
+        return $this->conn->prepare($statement);
+    }
+
 
 }
 ?>

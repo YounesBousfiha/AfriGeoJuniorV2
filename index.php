@@ -1,3 +1,10 @@
+<?php
+
+include './country.php';
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +13,9 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-
-    </div>
+    <form aciton="country.php" method="POST">
+        <input type="text">
+        <button type="submit">Click</button>
+    </form>
 </body>
 </html>

@@ -1,10 +1,11 @@
 <?php
-session_start();
 
-if (isset($_SESSION["role"])) {
-    header("location:javascript://history.go(-1)");
-    exit();
-}
+include '../../../config/db.php';
+include '../../../helpers/helpers.php';
+include '../../../model/UserModel.php';
+include '../../../controllers/userController.php';
+
+$db = new DBConnection();
 
 $email_pattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
 $name_pattern = "/^[a-zA-Z\s]+$/";
@@ -27,32 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($password)) $password_err = "Password is required";
 
     if (!empty($email) && !empty($password)) {
-        $user_statement = $connect->prepare("SELECT user_id, username, email, phone, password, avatar, role_id FROM user WHERE email = ?");
-        $user_statement->bind_param("s", $email);
-        $user_statement->execute();
-        $user_statement->store_result();
-
-        if ($user_statement->num_rows > 0) {
-            $user_statement->bind_result($db_user_id, $db_username, $db_email, $db_phone, $db_password, $db_avatar, $db_role_id);
-            while ($user_statement->fetch()) {
-                if (password_verify($password, $db_password)) {
-                    $_SESSION["user_id"] = $db_user_id;
-                    $_SESSION["username"] = $db_username;
-                    $_SESSION["role"] = $db_role_id;
-                    $_SESSION["avatar"] = $db_avatar;
-                    $_SESSION["email"] = $db_email;
-
-                    if ($db_role_id == 2)
-                        header("location: ./dashboard.php");
-                    elseif ($db_role_id == 1)
-                        header("location: ./home.php");
-                } else $password_err = "Password is incorrect";
-            }
-        } else {
-            $error_query = "Email or Password are Incorrect";
-        }
+        $userController = new UserController($db);
+        $result = $userController->login($db, $email, $password);
+        $error_query = $result;
     }
 }
+
 
 ?>
 
@@ -74,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="font-[Oswald]">
     <div class="bg-gray-50 w-full min-h-[100vh] flex flex-col justify-between items-center">
         <div class="bg-gray-100 w-full flex items-center gap-1 p-2">
-            <img src="../assets/images/icons/arrow-left.svg" class="size-4" alt="">
+            <img src="../../assets/images/icons/arrow-left.svg" class="size-4" alt="">
             <a href="../../pages/home.php" class="hover:underline cursor-pointer">Back to home page</a>
         </div>
 

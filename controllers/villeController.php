@@ -79,6 +79,7 @@ trait VilleController {
         try {
             $stm = $this->db->prepare($sql);
             $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }

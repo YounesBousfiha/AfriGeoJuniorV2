@@ -1,10 +1,46 @@
 <?php
-$continent_name = "";
-$continent_name_err = "";
+$pays_nom = "";
+$pays_population = "";
+$pays_langues = "";
+$id_continent = "";
+$pays_image = "";
+// errors variables
+$pays_nom_err = "";
+$pays_population_err = "";
+$pays_langues_err = "";
+$id_continent_err = "";
+$pays_image_err = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $continent_name = $_POST["continent-name"];
-    if (empty($continent_name)) $continent_name_err = "This field is Required...";
+    $pays_nom = $_POST["pays-nom"];
+    $pays_population = $_POST["pays-population"];
+    $pays_langues = $_POST["pays-langues"];
+    $id_continent = isset($_POST["id-continent"]) ? $_POST["id-continent"] : null;
+    $pays_image = $_POST["pays-image"];
+
+    if (empty($pays_nom)) $pays_nom_err = "Country name is required...";
+    if (empty($pays_population)) $pays_population_err = "Country population is required...";
+    if (empty($pays_langues)) $pays_langues_err = "Country langues is required...";
+    if (empty($id_continent)) $id_continent_err = "Country continent is required...";
+    if (empty($pays_image)) $pays_image_err = "Country image is required...";
+
+    if (!empty($pays_nom && !empty($pays_population) && !empty($pays_langues) && !empty($id_continent) && !empty($pays_image))) {
+        session_start();
+        $_SESSION["pays-nom"] = $pays_nom;
+        $_SESSION["pays-population"] = $pays_population;
+        $_SESSION["pays-langues"] = $pays_langues;
+        $_SESSION["id-continent"] = $id_continent;
+        $_SESSION["pays-image"] = $pays_image;
+        header("location: ../../../../pages/country/create_country.php");
+    }
 }
+
+include '../../../../config/db.php';
+include '../../../../controllers/AdminController.php';
+
+$db = new DBConnection();
+$admin = new AdminController($db);
+$all_continents = $admin->getAllContinent();
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create continent</title>
+    <title>Create pays</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
         rel="stylesheet" />
@@ -35,26 +71,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="flex-grow flex flex-col text-sm gap-1 mb-4">
-                    <label for="country-name" class="text-gray-600">Country name</label>
-                    <input name="country-name" id="country-name" type="text" class="bg-gray-100 p-1" placeholder="eg: Morocco, Egypt...">
-                    <!-- <p id="country-name-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <label for="pays-nom" class="text-gray-600">Country name</label>
+                    <input value="<?= $pays_nom ?>" name="pays-nom" id="pays-nom" type="text" class="bg-gray-100 p-1" placeholder="eg: Morocco, Egypt...">
+                    <p id="country-name-err" class="text-red-600 text-sm"><?= $pays_nom_err ?></p>
 
-                    <label for="country-population" class="text-gray-600">Country Population</label>
-                    <input name="country-population" id="country-population" type="text" class="bg-gray-100 p-1" placeholder="eg: 1000300...">
-                    <!-- <p id="continent-population-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <label for="pays-population" class="text-gray-600">Country Population</label>
+                    <input value="<?= $pays_population ?>" name="pays-population" id="pays-population" type="text" class="bg-gray-100 p-1" placeholder="eg: 1000300...">
+                    <p id="pays-population-err" class="text-red-600 text-sm"><?= $pays_population_err ?></p>
 
-                    <label for="country-langue" class="text-gray-600">Country Langues</label>
-                    <input name="country-langue" id="country-langue" type="text" class="bg-gray-100 p-1" placeholder="eg: Arabic, french...">
-                    <!-- <p id="continent-langue-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <label for="pays-langues" class="text-gray-600">Country Langues</label>
+                    <input value="<?= $pays_langues ?>" name="pays-langues" id="pays-langues" type="text" class="bg-gray-100 p-1" placeholder="eg: Arabic, french...">
+                    <p id="pays-langues-err" class="text-red-600 text-sm"><?= $pays_langues_err ?></p>
 
-                    <label for="country-continent" class="text-gray-600">Continent of the Country</label>
-                    <select class="bg-gray-100 p-1" name="continent-continent" id="continent-country">
+                    <label for="id-continent" class="text-gray-600">Continent of the Country</label>
+                    <select class="bg-gray-100 p-1" name="id-continent" id="id-continent">
                         <option value="" disabled selected>Select a Continent</option>
-                        <!-- make all continents from db in this select option -->
+                        <!-- get all pays from db in this select option -->
+                        <?php
+                        foreach($all_continents as $continent){
+                            echo "<option value='$continent[Id_continent]'>$continent[Continent_name]</option>";
+                        }
+                        ?>
                     </select>
+                    <p id="id-continent-err" class="text-red-600 text-sm"><?= $id_continent_err ?></p>
 
-                    <label for="country-image" class="text-gray-600">Select an image</label>
-                    <input id="country-image" class="bg-gray-100 p-1" type="file">
+                    <label for="pays-image" class="text-gray-600">Select an image</label>
+                    <input value="<?= $pays_image ?>" id="pays-image" name="pays-image" class="bg-gray-100 p-1" type="file">
+                    <p id="pays-image-err" class="text-red-600 text-sm"><?= $pays_image_err ?></p>
                 </div>
 
                 <div class="flex gap-1 flex-wrap-reverse">

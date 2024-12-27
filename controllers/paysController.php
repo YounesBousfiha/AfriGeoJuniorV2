@@ -57,7 +57,7 @@ trait PaysController {
     }
 
     public function getAllPays() {
-        $sql = "SELECT * FROM Pays";
+        $sql = "SELECT * FROM Pays, Continents where continents.Id_continent = Pays.Id_pays";
         try {
             $stm = $this->db->prepare($sql);
             $stm->execute();

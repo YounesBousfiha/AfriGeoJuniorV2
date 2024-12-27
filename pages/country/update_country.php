@@ -27,7 +27,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if($pays_id && $pays_nom && $pays_population && $id_continent) {
             $updatedCountry = new Pays($pays_nom, $pays_population, $pays_image, $id_continent, $user['Id_user']);
-            
             $updatedCountry->__set('pays_id', $pays_id);
             $updatedCountry->__set('pays_nom', $pays_nom);
             $updatedCountry->__set('pays_population', $pays_population);
@@ -35,6 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $updatedCountry->__set('pays_image', $pays_image);
 
             $admin = new AdminController($db, null, $updatedCountry, null);
+
             $admin->updatePays($updatedCountry->__get('pays_id'), $updatedCountry->__get('pays_nom'), $updatedCountry->__get('pays_population'), $updatedCountry->__get('id_continent'), $updatedCountry->__get('pays_image'));
         } else {
             echo "Invalidate Data";

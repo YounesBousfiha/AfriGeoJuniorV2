@@ -57,7 +57,7 @@ trait VilleController {
     }
     
     public function deleteVille($id) {
-        $sql = "DELETE FROM Ville WHERE Id_ville = :Id_ville";
+        $sql = "DELETE FROM Villes WHERE Id_ville = :Id_ville";
 
         try {
             $stm = $this->db->prepare($sql);
@@ -90,6 +90,7 @@ trait VilleController {
         try {
             $stm = $this->db->prepare($sql);
             $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }

@@ -1,57 +1,53 @@
 <?php
+include '../../../config/db.php';
+include '../../../helpers/helpers.php';
+include '../../../model/UserModel.php';
+include '../../../controllers/userController.php';
+
+$db = new DBConnection();
 
 // inputs values
-$username = "";
+$firstname = "";
+$lastname = "";
 $email = "";
 $password = "";
 $confirm_password = "";
-$phone = "";
-$avatar = "../assets/images/icons/user.svg";
 // label of error messages
-$username_err = "";
+$firstname_err = "";
+$lastname_err = "";
 $email_err = "";
-$phone_err = "";
 $password_err = "";
 $confirm_password_err = "";
 
 $error_query = "";
 
-$email_pattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
 $name_pattern = "/^[a-zA-Z\s]+$/";
+$email_pattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = htmlspecialchars($_POST["username"]);
+    $firstname = htmlspecialchars($_POST["firstname"]);
+    $lastname = htmlspecialchars($_POST["lastname"]);
     $email = htmlspecialchars($_POST["email"]);
-    $phone = htmlspecialchars($_POST["phone"]);
     $password = htmlspecialchars($_POST["password"]);
     $confirm_password = htmlspecialchars($_POST["confirm_password"]);
 
-    if (empty($username)) $username_err = "Username is required";
-    if (!preg_match($name_pattern, $username)) $username_err = "Username is invalid";
+    if (empty($firstname)) $firstname_err = "Firstname is required";
+    if (!preg_match($name_pattern, $firstname)) $firstname_err = "Firstname is invalid";
+    if (empty($lastname)) $lastname_err = "Lastname is required";
+    if (!preg_match($name_pattern, $lastname)) $lastname_err = "Lastname is invalid";
     if (empty($email)) $email_err = "Email is required";
     if (!preg_match($email_pattern, $email)) $email_err = "Email address invalid";
-    if (empty($phone)) $phone_err = "Phone is required";
-    if (empty($password)) $password_err = "USername is required";
+    if (empty($password)) $password_err = "Username is required";
     if (empty($confirm_password)) $confirm_password_err = "Password confirmation is required";
 
-    if (!empty($username) && !empty($email) && !empty($phone) && !empty($password) && !empty($confirm_password)) {
-        $all_users_statement = $connect->prepare("SELECT * FROM user WHERE email = ?");
-        $all_users_statement->bind_param("s", $email);
-        $all_users_statement->execute();
-        $all_users_statement->store_result();
-
-        if ($all_users_statement->num_rows > 0) {
-            $email_err = "Email Already Used, Choose Another Address Email.";
-        } else if ($password != $confirm_password) $confirm_password_err = "Passwords are not Match!";
+    if (!empty($firstname) && !empty($lastname) && !empty($email) && !empty($password) && !empty($confirm_password)) {
+        if ($password != $confirm_password) $confirm_password_err = "Passwords are not Match!";
         else {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $create_user_statement = $connect->prepare("INSERT INTO user (username, phone, email, password, avatar) VALUES (?, ?, ?, ?, ?)");
-            $create_user_statement->bind_param("sssss", $username, $phone, $email, $hashed_password, $avatar);
-            if ($create_user_statement->execute()) {
-                header("location: login.php");
-            } else {
-                $error_query = "Something Went Wrong While Inserting, Try Again Later";
-            }
+            $role_id = 2;
+            $user = new User($firstname, $lastname, $email, $password, $role_id);
+            $userController = new UserController($db);
+            $result = $userController->signup($user);
+            $error_query = $result;
         }
     }
 }
@@ -76,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="font-[Oswald]">
     <div class="bg-gray-50 w-full min-h-[100vh] flex flex-col justify-between items-center">
         <div class="bg-gray-100 w-full flex items-center gap-1 p-2">
-            <img src="../assets/images/icons/arrow-left.svg" class="size-4" alt="">
+            <img src="../../assets/images/icons/arrow-left.svg" class="size-4" alt="">
             <a href="../../pages/home.php" class="hover:underline cursor-pointer">Back to home page</a>
         </div>
 
@@ -86,21 +82,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="p-6 flex flex-col text-sm gap-2">
                     <label name="error_query" class="bg-red-50 text-red-500"><?php echo $error_query; ?></label>
                     <div class="flex flex-col">
-                        <label class="text-gray-500" for="username">username </label>
-                        <input value="<?php echo $username; ?>" autocomplete="username" type="text" name="username" id="username" placeholder="e.g: Jhone Dow" class="bg-gray-100 rounded-sm p-1">
-                        <label name="username_err" class="text-red-500"><?php echo $username_err; ?></label>
+                        <label class="text-gray-500" for="firstname">firstname </label>
+                        <input value="<?php echo $firstname; ?>" autocomplete="firstname" type="text" name="firstname" id="firstname" placeholder="e.g: Jhone Dow" class="bg-gray-100 rounded-sm p-1">
+                        <label name="firstname_err" class="text-red-500"><?php echo $firstname_err; ?></label>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-gray-500" for="lastname">lastname </label>
+                        <input value="<?php echo $lastname; ?>" autocomplete="lastname" type="text" name="lastname" id="lastname" placeholder="e.g: Jhone Dow" class="bg-gray-100 rounded-sm p-1">
+                        <label name="lastname_err" class="text-red-500"><?php echo $lastname_err; ?></label>
                     </div>
 
                     <div class="flex flex-col">
                         <label class="text-gray-500" for="email">email </label>
                         <input value="<?php echo $email; ?>" autocomplete="email" type="email" name="email" id="email" placeholder="e.g: example@gmail.com" class="bg-gray-100 rounded-sm p-1">
                         <label name="email_err" class="text-red-500"><?php echo $email_err; ?></label>
-                    </div>
-
-                    <div class="flex flex-col">
-                        <label class="text-gray-500" for="phone">phone </label>
-                        <input value="<?php echo $phone; ?>" type="text" name="phone" id="phone" placeholder="e.g: +212-645-506932" class="bg-gray-100 rounded-sm p-1">
-                        <label name="phone_err" class="text-red-500"><?php echo $phone_err; ?></label>
                     </div>
 
                     <div class="flex flex-col">

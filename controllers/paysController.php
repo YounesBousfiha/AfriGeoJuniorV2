@@ -2,7 +2,8 @@
 
 trait PaysController {
     
-    public function createPays($countryInstance) {
+    public function createPays() {
+        $countryInstance = $this->pays;
         $sql = "INSERT INTO Pays(Nom_pays, Population, Id_continent, Created_by, Image)
                 VALUES (:Nom_pays, :Population, :Id_continent, :Created_by, :Image)";
         try {

@@ -1,7 +1,7 @@
 <?php
 
-include '../../config/db.php';
-include '../../controllers/PersonController.php';
+require_once '../../config/db.php';
+require_once '../../controllers/PersonController.php';
 
 $auth_token = isset($_COOKIE["auth_token"]) ? $_COOKIE["auth_token"] : "null";
 $user = null;

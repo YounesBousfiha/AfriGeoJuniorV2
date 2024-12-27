@@ -23,15 +23,14 @@ class UserController extends PersonController {
                 $stm->bindValue(':Password', $hashed_password);
                 $stm->bindValue(':Id_role', $newuserInstance->__get('role'));
                 if($stm->execute()) {
-                    header("Location: ABSOLUTE_URL"); // TODO: REDIRECT TO LOGIN PAGE
+                    header("Location: ../../../src/pages/auth/login.php"); 
                     return true;
                 }
             } catch (Exception $e) {
-                echo "Error: " . $e->getMessage();
-                return false;
+                return "Error: " . $e->getMessage();
             }
         } else {
-            echo "Email ALready registred";
+            return "Email Already Used, Choose Another Address Email.";
         }
     }
 }

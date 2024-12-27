@@ -68,6 +68,26 @@ CREATE TABLE IF NOT EXISTS Villes (
     Id_pays int NOT NULL,
     Created_by int NOT NULL,
     PRIMARY KEY(Id_ville),
-    FOREIGN KEY (Id_pays) REFERENCES Pays(Id_pays) ON DELETE CASCADE,
-    FOREIGN KEY(Created_by) REFERENCES Users(Id_user) ON DELETE CASCADE
+    FOREIGN KEY (Id_pays) REFERENCES Pays(Id_pays),
+    FOREIGN KEY(Created_by) REFERENCES Users(Id_user)
 );
+
+-- Nombre de villes par pays.
+SELECT pays.nom, COUNT(*) 
+FROM ville, pays 
+WHERE pays.id_pays = ville.id_pays GROUP BY pays.nom;
+
+-- Nombre de pays par continent.
+SELECT continent.nom, count(*) 
+FROM continent, pays 
+WHERE continent.id_continent = pays.id_continent GROUP BY continent.nom;
+
+-- Le continent ayant la plus grande population.
+-- -- premiere creer une vue avec les continent et leur population total
+CREATE VIEW continent_population as SELECT continent.nom, SUM(population) AS 'Population' 
+FROM continent, pays 
+WHERE continent.id_continent = pays.id_continent GROUP BY continent.nom;
+-- -- requte pour selectioner le pays avec la grande poulation
+select * fROM continent_population where population = (select MAX(population) from continent_population);
+
+-- La ville la plus peuplée par continent.

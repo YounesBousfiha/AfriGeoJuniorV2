@@ -1,3 +1,12 @@
+<?php
+include "../../config/db.php";
+include "../../controllers/adminController.php";
+
+$db = new DBConnection();
+$admin = new AdminController($db);
+$all_cities = $admin->getAllVille();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -116,11 +125,11 @@
                         <tbody>
 
                             <?php
-                            for ($i = 0; $i < 22; $i++) {
+                            foreach ($all_cities as $city) {
                                 echo "<tr class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
-                                echo "<th class='px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white'>1</th>";
-                                echo "<td class='px-6 py-2'>Rabat</td>";
-                                echo "<td class='px-6 py-2'>Capital</td>";
+                                echo "<th class='px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white'>$city[Id_ville]</th>";
+                                echo "<td class='px-6 py-2'>$city[Nom_ville]</td>";
+                                echo "<td class='px-6 py-2'>$city[Type_ville]</td>";
                                 echo "<td class='px-6 py-2'>Morocco</td>";
                                 echo "<td class='px-6 py-2'>Africa</td>";
                                 echo "<td class='px-6 py-2 flex gap-2'>

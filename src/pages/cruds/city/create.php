@@ -1,11 +1,45 @@
 <?php
-$continent_name = "";
-$continent_name_err = "";
+$city_nom = "";
+$city_type = "";
+$id_pays = "";
+$city_image = "";
+// errors variables
+$city_nom_err = "";
+$city_type_err = "";
+$id_pays_err = "";
+$city_image_err = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $continent_name = $_POST["continent-name"];
-    if (empty($continent_name)) $continent_name_err = "This field is Required...";
+    $pays_nom = $_POST["pays-nom"];
+    $pays_population = $_POST["pays-population"];
+    $id_continent = isset($_POST["id-continent"]) ? $_POST["id-continent"] : null;
+    $pays_image = $_POST["pays-image"];
+
+    if (empty($pays_nom)) $pays_nom_err = "Country name is required...";
+    if (empty($pays_population)) $pays_population_err = "Country population is required...";
+    if (empty($id_continent)) $id_continent_err = "Country continent is required...";
+    if (empty($pays_image)) $pays_image_err = "Country image is required...";
+
+    if (!empty($pays_nom && !empty($pays_population) && !empty($id_continent) && !empty($pays_image))) {
+        session_start();
+        $_SESSION["pays-nom"] = $pays_nom;
+        $_SESSION["pays-population"] = $pays_population;
+        $_SESSION["id-continent"] = $id_continent;
+        $_SESSION["pays-image"] = $pays_image;
+        header("location: ../../../../pages/country/create_country.php");
+    }
 }
+
+include '../../../../config/db.php';
+include '../../../../controllers/AdminController.php';
+
+$db = new DBConnection();
+$admin = new AdminController($db);
+$all_cities = $admin->getAllPays();
+
+var_dump($all_cities);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,8 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="flex-grow flex flex-col text-sm gap-1 mb-4">
-                    <label for="city-name" class="text-gray-600">City name</label>
-                    <input name="city-name" id="city-name" type="text" class="bg-gray-100 p-1" placeholder="eg: Meknes, Fes...">
+                    <label for="city-nom" class="text-gray-600">City name</label>
+                    <input name="city-nom" id="city-nom" type="text" class="bg-gray-100 p-1" placeholder="eg: Meknes, Fes...">
                     <!-- <p id="city-name-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
 
                     <label for="city-type" class="text-gray-600">City Type</label>
@@ -50,9 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="city-country" class="text-gray-600">Country of City</label>
                     <select name="city-country" id="city-country" class="bg-gray-100 p-1">
                         <option value="" selected disabled>Select a Country</option>
-                        <!-- <?php
-                        
-                        ?> -->
+                        <?php
+                        foreach($all_cities as $city){
+                            echo "<option value='$citi[Id_pays]'>$city[Nom_pays]</option>";
+                        }
+                        ?>
                     </select>
                     <!-- <p id="city-type-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
 

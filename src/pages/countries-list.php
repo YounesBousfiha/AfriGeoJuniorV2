@@ -131,8 +131,8 @@ $all_countries = $admin->getAllPays();
                                 echo "<td class='px-6 py-2'>Arabic, Tamazight</td>";
                                 echo "<td class='px-6 py-2'>$country[Continent_name]</td>";
                                 echo "<td class='px-6 py-2 flex gap-2'>
-                                    <a href='../../src/pages/cruds/country/update.php?id=1' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>Edit</a>
-                                    <a href='../../src/cruds/delete-country.php?id=1' class='font-medium text-red-600 dark:text-red-500 hover:underline'>Delete</a>
+                                    <a href='../../src/pages/cruds/country/update.php?id_country=$country[Id_pays]' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>Edit</a>
+                                    <a href='../../src/pages/cruds/country/delete.php?id_country=$country[Id_pays]' class='font-medium text-red-600 dark:text-red-500 hover:underline'>Delete</a>
                                 </td>";
                                 echo "</tr>";
                             }

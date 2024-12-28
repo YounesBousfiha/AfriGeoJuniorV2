@@ -10,15 +10,15 @@ $id_pays_err = "";
 $city_image_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $city_nom = $_POST["pays-nom"];
-    $city_type = isset($_POST["pays-type"]) ? $_POST["pays-type"] : null;
-    $id_pays = isset($_POST["id-continent"]) ? $_POST["id-pays"] : null;
-    $city_image = $_POST["pays-image"];
+    $city_nom = $_POST["city-nom"];
+    $city_type = isset($_POST["city-type"]) ? $_POST["city-type"] : null;
+    $id_pays = isset($_POST["id-pays"]) ? $_POST["id-pays"] : null;
+    $city_image = $_POST["city-image"];
 
-    if (empty($pays_nom)) $pays_nom_err = "City name is required...";
+    if (empty($city_nom)) $city_nom_err = "City name is required...";
     if (empty($city_type)) $city_type_err = "City typr is required...";
-    if (empty($id_continent)) $id_continent_err = "City country is required...";
-    if (empty($pays_image)) $pays_image_err = "City image is required...";
+    if (empty($id_pays)) $id_pays_err = "City country is required...";
+    if (empty($city_image)) $city_image_err = "City image is required...";
 
     if (!empty($city_nom) && !empty($city_type) && !empty($id_pays) && !empty($city_image)) {
         session_start();
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["city-type"] = $city_type;
         $_SESSION["id-pays"] = $id_pays;
         $_SESSION["image-image"] = $city_image;
-        header("location: localhost\AfriGeoJuniorV2\pages\ville\create_ville.php");
+        header("location: ../../../../pages/ville/create_ville.php");
     }
 }
 
@@ -69,7 +69,7 @@ $all_countries = $admin->getAllPays();
                 <div class="flex-grow flex flex-col text-sm gap-1 mb-4">
                     <label for="city-nom" class="text-gray-600">City name</label>
                     <input value="<?= $city_nom ?>" name="city-nom" id="city-nom" type="text" class="bg-gray-100 p-1" placeholder="eg: Meknes, Fes...">
-                    <p id="city-nom-err" class="text-red-600 bg-red-50 px-1 text-sm"><?= $city_nom_err ?></p>
+                    <p id="city-nom-err" class="text-red-600 text-sm"><?= $city_nom_err ?></p>
 
                     <label for="city-type" class="text-gray-600">City Type</label>
                     <select value="<?= $city_ty ?>" name="city-type" id="city-type" class="bg-gray-100 p-1">
@@ -77,7 +77,7 @@ $all_countries = $admin->getAllPays();
                         <option value="Capital">Capital</option>
                         <option value="Autre">Autre</option>
                     </select>
-                    <p id="city-type-err" class="text-red-600 bg-red-50 px-1 text-sm"><?= $city_type_err ?></p>
+                    <p id="city-type-err" class="text-red-600 text-sm"><?= $city_type_err ?></p>
 
                     <label for="id-pays" class="text-gray-600">Country of City</label>
                     <select value="<?= $id_pays ?>" name="id-pays" id="id-pays" class="bg-gray-100 p-1">
@@ -88,11 +88,11 @@ $all_countries = $admin->getAllPays();
                         }
                         ?>
                     </select>
-                    <p id="id-pays-err" class="text-red-600 bg-red-50 px-1 text-sm"><?= $id_pays_err ?></p>
+                    <p id="id-pays-err" class="text-red-600 text-sm"><?= $id_pays_err ?></p>
 
                     <label for="city-image" class="text-gray-600">Select an image</label>
                     <input value="<?= $city_image ?>" id="city-image" name="city-image" class="bg-gray-100 p-1" type="file">
-                    <p id="city-image-err" class="text-red-600 bg-red-50 px-1 text-sm"><?= $city_image_err ?></p>
+                    <p id="city-image-err" class="text-red-600 text-sm"><?= $city_image_err ?></p>
                 </div>
 
                 <div class="flex gap-1 flex-wrap-reverse">

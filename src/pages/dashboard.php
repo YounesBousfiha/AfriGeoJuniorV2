@@ -1,3 +1,8 @@
+<?php
+include "../../config/db.php";
+include "../../controllers/adminController.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

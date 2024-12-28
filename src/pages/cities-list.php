@@ -129,12 +129,12 @@ $all_cities = $admin->getAllVille();
                                 echo "<tr class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
                                 echo "<th class='px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white'>$city[Id_ville]</th>";
                                 echo "<td class='px-6 py-2'>$city[Nom_ville]</td>";
-                                echo "<td class='px-6 py-2'>$city[Type_ville]</td>";
+                                echo "<td class='px-6 py-2'>$city[Image]</td>";
                                 echo "<td class='px-6 py-2'>Morocco</td>";
                                 echo "<td class='px-6 py-2'>Africa</td>";
                                 echo "<td class='px-6 py-2 flex gap-2'>
-                                    <a href='../../src/pages/cruds/city/update.php?id=1' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>Edit</a>
-                                    <a href='../../src/cruds/delete-city.php?id=1' class='font-medium text-red-600 dark:text-red-500 hover:underline'>Delete</a>
+                                    <a href='../../src/pages/cruds/city/update.php?id_city=$city[Id_ville]' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>Edit</a>
+                                    <a href='../../pages/ville/delete_ville.php?id=$city[Id_ville]' class='font-medium text-red-600 dark:text-red-500 hover:underline'>Delete</a>
                                 </td>";
                                 echo "</tr>";
                             }

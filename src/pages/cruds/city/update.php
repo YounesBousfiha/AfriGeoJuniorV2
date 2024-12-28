@@ -1,10 +1,50 @@
 <?php
-$continent_name = "";
-$continent_name_err = "";
+
+include '../../../../config/db.php';
+include '../../../../controllers/AdminController.php';
+
+$id_city = $_GET["id_city"];
+
+$db = new DBConnection();
+$admin = new AdminController($db);
+$city = $admin->getByIdVille($id_city);
+$all_countries = $admin->getAllPays();
+
+$city_nom = $city["Nom_ville"];
+$city_type = $city["Type_Ville"];
+$id_pays = $city["Id_pays"];
+$city_image = $city["Image"];
+// errors variables
+$city_nom_err = "";
+$city_type_err = "";
+$id_pays_err = "";
+$city_image_err = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $continent_name = $_POST["continent-name"];
-    if (empty($continent_name)) $continent_name_err = "This field is Required...";
+    $city_nom = $_POST["city-name"];
+    $city_type = $_POST["city-type"];
+    $id_pays = $_POST["city-country"];
+    $city_image = $_POST["city-image"];
+
+    if (empty($city_nom)) $city_nom_err = "City name is required...";
+    if (empty($city_type)) $city_type_err = "City type is required...";
+    if (empty($id_pays)) $id_pays_err = "City country is required...";
+    if (empty($city_image)) $city_image_err = "City image continent is required...";
+    
+    if (!empty($city_nom) && !empty($city_type) && !empty($id_pays) && !empty($city_image)) {
+        session_start();
+        $_SESSION["city-id"] = $id_city;
+        $_SESSION["city-nom"] = $city_nom;
+        $_SESSION["city-type"] = $city_type;
+        $_SESSION["id-pays"] = $id_pays;
+        $_SESSION["city-image"] = $city_image;
+
+        var_dump($city_nom);
+
+        header("location: ../../../../pages/ville/update_ville.php");
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -36,28 +76,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="flex-grow flex flex-col text-sm gap-1 mb-4">
                     <label for="city-name" class="text-gray-600">City name</label>
-                    <input name="city-name" id="city-name" type="text" class="bg-gray-100 p-1" placeholder="eg: Meknes, Fes...">
-                    <!-- <p id="city-name-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <input value="<?= $city_nom ?>" name="city-name" id="city-name" type="text" class="bg-gray-100 p-1" placeholder="eg: Meknes, Fes...">
+                    <p id="city-name-errMssg" class="text-red-600 text-sm"><?= $city_nom_err ?></p>
 
                     <label for="city-type" class="text-gray-600">City Type</label>
                     <select name="city-type" id="city-type" class="bg-gray-100 p-1">
-                        <option value="" selected disabled>Select a Type</option>
                         <option value="Capital">Capital</option>
                         <option value="Autre">Autre</option>
                     </select>
-                    <!-- <p id="city-type-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <p id="city-type-errMssg" class="text-red-600 text-sm"><?= $city_type_err ?></p>
 
                     <label for="city-country" class="text-gray-600">Country of City</label>
                     <select name="city-country" id="city-country" class="bg-gray-100 p-1">
                         <option value="" selected disabled>Select a Country</option>
-                        <!-- <?php
-
-                        ?> -->
+                        <?php
+                        foreach($all_countries as $country){
+                            if($city["Id_pays"] == $country["Id_pays"])
+                                echo "<option selected value='$country[Id_pays]'>$country[Nom_pays]</option>";
+                            else 
+                                echo "<option value='$country[Id_pays]'>$country[Nom_pays]</option>";
+                        }
+                        ?>
                     </select>
-                    <!-- <p id="city-type-errMssg" class="text-red-600 bg-red-50 px-1 text-sm">This field is Required...</p> -->
+                    <p id="city-type-errMssg" class="text-red-600 text-sm"><?= $id_pays_err ?></p>
 
                     <label for="city-image" class="text-gray-600">Select an image</label>
-                    <input id="city-image" name="city-image" class="bg-gray-100 p-1" type="file">
+                    <input value="<?= $city_image ?>" id="city-image" name="city-image" class="bg-gray-100 p-1" type="file">
+                    <p id="city-type-errMssg" class="text-red-600 text-sm"><?= $city_image_err ?></p>
                 </div>
 
                 <div class="flex gap-1 flex-wrap-reverse">

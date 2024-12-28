@@ -24,6 +24,11 @@ $id_continent_err = "";
 $pays_image_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $pays_nom = $_POST["pays-nom"];
+    $pays_population = $_POST["pays-population"];
+    $pays_langues = $_POST["pays-langues"];
+    $id_continent = $_POST["id-continent"];
+    $pays_image = $_POST["pays-image"];
 
     if (empty($pays_nom)) $pays_nom_err = "Country name is required...";
     if (empty($pays_population)) $pays_population_err = "Country population is required...";
@@ -33,12 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($pays_nom && !empty($pays_population) && !empty($pays_langues) && !empty($id_continent) && !empty($pays_image))) {
         session_start();
+        $_SESSION["pays-id"] = $id_country;
         $_SESSION["pays-nom"] = $pays_nom;
         $_SESSION["pays-population"] = $pays_population;
         $_SESSION["pays-langues"] = $pays_langues;
         $_SESSION["id-continent"] = $id_continent;
         $_SESSION["pays-image"] = $pays_image;
-        header("location: localhost\AfriGeoJuniorV2\pages\country\update_country.php");
+
+        var_dump($pays_nom);
+
+        header("location: ../../../../pages/country/update_country.php");
     }
 }
 

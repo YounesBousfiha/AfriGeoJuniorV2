@@ -82,6 +82,19 @@ trait VilleController {
         }
     }
 
+    public function getAllVilleInPays($id){
+        $sql = "SELECT * FROM villes WHERE villes.Id_pays = :Id_pays";
+
+        try {
+            $stm = $this->db->prepare($sql);
+            $stm->bindValue(":Id_pays", $id);
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        } catch(Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     public function getAllVille() {
         $sql = "SELECT * FROM Villes";
 

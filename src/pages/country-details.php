@@ -1,3 +1,15 @@
+<?php
+include "../../config/db.php";
+include "../../controllers/PersonController.php";
+
+$db = new DBConnection();
+$person = new PersonController($db);
+$all_cities = $person->getAllVilleInPays($_GET["id"]);
+
+$country_details = $person->getByIdPays($_GET["id"]);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,9 +37,9 @@
                         <div class='flex gap-1 max-sm:flex-col bg-gray-100' style='margin-bottom: 20px;'>
                             <img src='https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' alt='' class='h-[120px] max-sm:object-cover'>
                             <div class='flex flex-col'>
-                                <p class='text-gray-900 font-bold text-xl'>". "Rabat" ."</p>
+                                <p class='text-gray-900 font-bold text-xl'>$country_details[Nom_pays]</p>
                                 <p class='text-xs text-gray-500'>Langues: "."Arabic, Tamazight"."</p>
-                                <p class='text-xs text-gray-500'>"."37.000.000"." People</p>
+                                <p class='text-xs text-gray-500'>$country_details[Population] People</p>
                                 <p class='text-sm text-gray-700 w-1/2 max-lg:w-full'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit possimus perferendis, repellat, voluptatum itaque blanditiis expedita deserunt laborum sint maiores voluptatem non, recusandae dolorem minima!</p>
                             </div>
                         </div>
@@ -48,29 +60,16 @@
                 
                 <div class="flex gap-4 flex-wrap justify-start flex-grow max-h-[76vh] overflow-auto [&::-webkit-scrollbar]:hidden">
                     <?php
-
-                        // if($country != ""){
-                        //     $sql = "SELECT *, pays.nom as country, ville.nom as city FROM ville, pays WHERE pays.nom LIKE '$country' AND pays.id_pays = ville.id_pays";
-                        //     $result = mysqli_query($conn, $sql);
-
-                        //     if(mysqli_num_rows($result) > 0){
-                                for($i=0; $i<12; $i++){
-
-                                    echo "<div class='w-[24.2%] max-xl:w-[31.6%] max-lg:w-[32%] max-[868px]:w-[48.5%] max-md:w-[100%]'>
-                                        <img src='https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class='h-[200px] w-full object-cover'>
-                                        <div class='flex items-center justify-between'>
-                                            <p class='text-lg font-bold'>". "Rabat" ."</p>
-                                            <p class='text-gray-400 text-sm'>". "Capital" ."</p>
-                                        </div>
-                                        <p class='text-gray-700 text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam corrupti error deserunt. Quis modi sapiente voluptatum adipisci omnis rem culpa veniam, itaque nulla officia nisi?</p>
-                                    </div>";
-                                }
-                        //     }
-                        //     else echo "<p class='bg-red-50 text-red-600 w-full p-2'>'". $country ."' Country Not Found in the Database, Please verify and Try Again !</p>";
-                        // }
-                        // else {
-                        //     echo "<p class='bg-red-50 text-red-600 w-full p-2'>Sorry, Something Went Wrong !</p>";
-                        // }
+                        foreach ($all_cities as $city) {
+                            echo "<div class='w-[24.2%] max-xl:w-[31.6%] max-lg:w-[32%] max-[868px]:w-[48.5%] max-md:w-[100%]'>
+                                <img src='https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class='h-[200px] w-full object-cover'>
+                                <div class='flex items-center justify-between'>
+                                    <p class='text-lg font-bold'>$city[Nom_ville]</p>
+                                    <p class='text-gray-400 text-sm'>$city[Type_Ville]</p>
+                                </div>
+                                <p class='text-gray-700 text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam corrupti error deserunt. Quis modi sapiente voluptatum adipisci omnis rem culpa veniam, itaque nulla officia nisi?</p>
+                            </div>";
+                        }
                     ?>
                 </div>
             </section>

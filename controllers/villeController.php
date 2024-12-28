@@ -70,15 +70,13 @@ trait VilleController {
         }   
     }
     public function getByIdVille($id) {
-        $sql = "SELECT * FROM Ville WHERE Id_ville = :Id_ville";
+        $sql = "SELECT * FROM Villes WHERE Id_ville = :Id_ville";
 
         try {
             $stm = $this->db->prepare($sql);
             $stm->bindValue(":Id_ville", $id);
             $stm->execute();
-            $res = $stm->get_result();
-            $data = $res->fetchALL(); // TEST WITHOUT PDO::FETCH_ASSOC
-            return $data;
+            return $stm->fetch(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
             echo "Error: " . $e->getMessage();
         }

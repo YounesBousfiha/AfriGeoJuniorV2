@@ -16,26 +16,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET['id'])) {
         $id = Helpers::validateData($_GET['id']);
         $admin->deletePays($id);
-        header("REFRESH: 0;");
+        // header("location: ./../../src/pages/countries-list.php");
+        // TODO: not working
+        // FIX: Error: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`geojuniorv2`.`villes`, CONSTRAINT `villes_ibfk_1` FOREIGN KEY (`Id_pays`) REFERENCES `pays` (`Id_pays`))
     }
 }
-
-?>
-
-
-
-<?php
-
-
-echo '<table border="1">';
-echo '<tr><th>Nom</th></tr>';
-
-foreach ($countries as $country) {
-    echo '<tr>';
-    echo '<td>' . htmlspecialchars($country['Nom_pays']) . '</td>';
-    echo '<td><a href="delete_country.php?id=' . $country['Id_pays'] . '">Delete</a></td>';
-    echo '</tr>';
-}
-
-echo '</table>';
-?>

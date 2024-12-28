@@ -18,6 +18,47 @@ class AdminController extends PersonController {
         $this->ville = $ville;
     }
 
+    public function countUsers(){
+        $sql = "SELECT COUNT(*) as count_users FROM Users";
+        try {
+            $stm = $this->db->prepare($sql);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    public function countContinents(){
+        $sql = "SELECT COUNT(*) as count_continents FROM Continents";
+        try {
+            $stm = $this->db->prepare($sql);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    public function countCountries(){
+        $sql = "SELECT COUNT(*) as count_countries FROM Pays";
+        try {
+            $stm = $this->db->prepare($sql);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    public function countCities(){
+        $sql = "SELECT COUNT(*) as count_cities FROM Villes";
+        try {
+            $stm = $this->db->prepare($sql);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     public function CountVillesInPays() {
         $sql = "SELECT Pays.Nom_pays, COUNT(*) FROM Villes, Pays WHERE Pays.Id_pays = Villes.Id_pays GROUP BY Pays.Nom_pays";
         try {

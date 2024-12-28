@@ -8,7 +8,7 @@ class Pays {
     private $id_continent;
     private $created_by;
 
-    function __construct($pays_nom, $pays_population, $pays_image, $id_continent, $created_by)
+    function __construct($pays_nom, $pays_population, $id_continent, $pays_image, $created_by)
     {
         $this->pays_nom = $pays_nom;
         $this->pays_population = $pays_population;

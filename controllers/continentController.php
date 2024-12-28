@@ -2,13 +2,14 @@
 
 trait ContinentController {
 
-    public function createContinent($continent_name, $createdby) {
+    public function createContinent($continent) {
+        var_dump($continent);
         $sql = "INSERT INTO Continents(Continent_name, Created_by)
                 VALUES (:Continent_name, :Created_by)";
         try {
             $stm = $this->db->prepare($sql);
-            $stm->bindValue(':Continent_name', $continent_name);
-            $stm->bindValue(':Created_by', $createdby);
+            $stm->bindValue(':Continent_name',$continent->__get('continent_nom'));
+            $stm->bindValue(':Created_by', $continent->__get('created_by'));
             $stm->execute();
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();

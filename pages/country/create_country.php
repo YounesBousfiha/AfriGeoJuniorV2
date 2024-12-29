@@ -31,8 +31,7 @@ if ($_COOKIE['auth_token']) {
     var_dump($user["Id_user"]);
 
     if ($pays_nom && $pays_population && $id_continent && $created_by) {
-
-        $newCountry = new Pays($pays_nom, $pays_population, $pays_image, $id_continent, $created_by);
+        $newCountry = new Pays($pays_nom, $pays_population, $id_continent, $pays_image, $created_by);
 
         $admin = new AdminController($db, null, $newCountry, null);
         $admin->createPays($newCountry);

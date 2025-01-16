@@ -76,7 +76,7 @@ $all_continents = $admin->getAllContinent();
                     <p id="country-name-err" class="text-red-600 text-sm"><?= $pays_nom_err ?></p>
 
                     <label for="pays-population" class="text-gray-600">Country Population</label>
-                    <input value="<?= $pays_population ?>" name="pays-population" id="pays-population" type="text" class="bg-gray-100 p-1" placeholder="eg: 1000300...">
+                    <input value="<?= $pays_population ?>" name="pays-population" id="pays-population" type="number" class="bg-gray-100 p-1" placeholder="eg: 1000300...">
                     <p id="pays-population-err" class="text-red-600 text-sm"><?= $pays_population_err ?></p>
 
                     <label for="pays-langues" class="text-gray-600">Country Langues</label>

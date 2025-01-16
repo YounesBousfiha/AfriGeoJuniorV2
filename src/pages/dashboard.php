@@ -1,3 +1,23 @@
+<?php
+include "../../config/db.php";
+include "../../controllers/adminController.php";
+
+$db = new DBConnection();
+
+if($_COOKIE['auth_token']) {
+  $person = new PersonController($db);
+  $user = $person->validateUser();
+
+  if($user['Id_role'] != 1) {
+      header("Location: ./home.php");
+  }
+
+} else {
+  header("Location: ./home.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

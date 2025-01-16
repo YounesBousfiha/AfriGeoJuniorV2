@@ -1,3 +1,13 @@
+<?php
+include "../../config/db.php";
+include "../../controllers/PersonController.php";
+
+$db = new DBConnection();
+$person = new PersonController($db);
+$all_countries = $person->getAllPays();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,14 +42,14 @@
                 </div>
                 <div class="flex gap-4 flex-wrap justify-start flex-grow max-h-[76vh] overflow-auto [&::-webkit-scrollbar]:hidden">
                     <?php 
-                        for($i=0; $i<12; $i++){
+                        foreach ($all_countries as $country) {
                             echo "<div class='w-[24.2%] max-xl:w-[31.6%] max-lg:w-[32%] max-[868px]:w-[48.5%] max-md:w-[100%]'>
-                                <a href=" . "'./country-details.php?country=". "Morocco" . "'>
+                                <a href='./country-details.php?id=$country[Id_pays]'>
                                     <img src='https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class='h-[200px] object-cover w-full'>
                                 </a>
                                 <div class='flex items-center justify-between'>
-                                    <p class='text-lg font-bold'>". "Morocco" .", ". "Africa" ."</p>
-                                    <p class='text-gray-400 text-sm'>". "36.000.000" ." people</p>
+                                    <p class='text-lg font-bold'>$country[Nom_pays]</p>
+                                    <p class='text-gray-400 text-sm'>$country[Population] people</p>
                                 </div>
                                 <p class='text-gray-500 text-xs'>Langues: ". "Arabic, Tamazight" ."</p>
                                 <p class='text-gray-700 text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam corrupti error deserunt. Quis modi sapiente voluptatum adipisci omnis rem culpa veniam, itaque nulla officia nisi?</p>

@@ -73,21 +73,21 @@ CREATE TABLE IF NOT EXISTS Villes (
 );
 
 -- Nombre de villes par pays.
-SELECT pays.nom, COUNT(*) 
-FROM ville, pays 
-WHERE pays.id_pays = ville.id_pays GROUP BY pays.nom;
+SELECT Pays.Nom_pays, COUNT(*) 
+FROM Ville, Pays 
+WHERE Pays.Id_pays = Ville.Id_pays GROUP BY Pays.Nom_pays;
 
 -- Nombre de pays par continent.
-SELECT continent.nom, count(*) 
-FROM continent, pays 
-WHERE continent.id_continent = pays.id_continent GROUP BY continent.nom;
+SELECT Continents.Continent_name, count(*) 
+FROM Continents, Pays 
+WHERE Continents.Id_continent = Pays.Id_continent GROUP BY Continents.Continent_name;
 
 -- Le continent ayant la plus grande population.
--- -- premiere creer une vue avec les continent et leur population total
-CREATE VIEW continent_population as SELECT continent.nom, SUM(population) AS 'Population' 
-FROM continent, pays 
-WHERE continent.id_continent = pays.id_continent GROUP BY continent.nom;
--- -- requte pour selectioner le pays avec la grande poulation
-select * fROM continent_population where population = (select MAX(population) from continent_population);
+CREATE VIEW continent_population as SELECT Continents.Continent_name, SUM(Population) AS 'Population' 
+FROM Continents, Pays 
+WHERE Continents.Id_continent = Pays.Id_continent GROUP BY Continents.Continent_name;
 
--- La ville la plus peuplée par continent.
+
+-- -- requte pour selectioner le pays avec la grande poulation
+SELECT *  FROM Pays WHERE Population = (SELECT MAX(Population) FROM Pays);
+--SELECT * FROM continent_population where population = (select MAX(Population) FROM continent_population);

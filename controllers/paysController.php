@@ -2,7 +2,8 @@
 
 trait PaysController {
     
-    public function createPays($countryInstance) {
+    public function createPays() {
+        $countryInstance = $this->pays;
         $sql = "INSERT INTO Pays(Nom_pays, Population, Id_continent, Created_by, Image)
                 VALUES (:Nom_pays, :Population, :Id_continent, :Created_by, :Image)";
         try {
@@ -57,7 +58,7 @@ trait PaysController {
     }
 
     public function getAllPays() {
-        $sql = "SELECT * FROM Pays, Continents where continents.Id_continent = Pays.Id_pays";
+        $sql = "SELECT * FROM Pays, Continents where Pays.Id_continent = Continents.Id_continent";
         try {
             $stm = $this->db->prepare($sql);
             $stm->execute();
